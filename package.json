@@ -1,0 +1,35 @@
+{
+  "name": "odin-todo-list",
+  "version": "1.0.0",
+  "description": "An Attempt at making a todo list webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arsymedes/odin-todo-list.git"
+  },
+  "author": "ahmad-arsy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arsymedes/odin-todo-list/issues"
+  },
+  "homepage": "https://github.com/arsymedes/odin-todo-list#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "@csstools/normalize.css": "^12.0.0",
+    "date-fns": "^2.28.0",
+    "normalize.css": "^8.0.1"
+  }
+}
