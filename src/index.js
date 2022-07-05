@@ -1,11 +1,11 @@
 import 'normalize.css'
 import "./style.css"
+import content from "./content.js"
 
 const domStuff = (() => {
-  
-  function initialDom() {
-    const body = document.querySelector("body");
+  const body = document.querySelector("body");
 
+  function initialDom() {
     let html = /*html*/ `
     <nav>
       <svg fill="currentColor" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">
@@ -103,19 +103,13 @@ const domStuff = (() => {
         </li>
       </ul>
     </div>
-    <div class="content">
-      <h1>Home</h1>
-      <ul>
-        <li>Brush Teeth</li>
-        <li>Make Odin Project</li>
-        <li>Go to the Gym</li>
-        <li>Find a Girlfriend</li>
-        <li>Making the best website everyone has ever seen</li>
-      </ul>
-    </div>
+    <div class="content"></div>
+  
     `;
 
     body.innerHTML = html;
+    content.displayProject();
+    content.displayItems();
   }
 
   return {
@@ -123,8 +117,106 @@ const domStuff = (() => {
   }
 })();
 
-const storage = (() => {
+const itemMaker = (title, description, dueDate, priority) => {
+  let checklist = false
 
+  function getChecklist() {
+    return checklist
+  }
+
+  function toggleChecklist() {
+    checklist = !checklist
+  }
+
+  return {
+    title,
+    description,
+    dueDate,
+    priority,
+    getChecklist,
+    toggleChecklist,
+  }
+}
+
+const projectMaker = (name, items) => {
+  return {
+    name,
+    items,
+  }
+}
+
+const notes = (title, description) => {
+  return {
+    title,
+    description,
+  }
+}
+
+const storage = (() => {
+  let currentProject = 1;
+
+  function getCurrentProject() {
+    return projects[currentProject];
+  }
+
+  function setCurrentProject(newProject) {
+    currentProject = newProject;
+  }
+
+  let projects = [
+    projectMaker(
+      "Home",
+      [
+        itemMaker("Brush Teeth", "Ayaya", "4 Sept", "low"),
+        itemMaker("Make Todo List", "Ayaya", "4 Sept", "low"),
+        itemMaker("Eat Soto Noodles", "Ayaya", "4 Sept", "low"),
+        itemMaker("Listen to Vergil to get Motivation", "Ayaya", "4 Sept", "low"),
+      ]
+    ),
+    projectMaker(
+      "Family",
+      [
+        itemMaker("Arsy", "Ayaya", "4 Sept", "low"),
+        itemMaker("Meutia", "Ayaya", "21 Nov", "medium"),
+        itemMaker("Khansa", "Ayaya", "8 Mar", "high")
+      ]
+    ),
+    projectMaker(
+      "Odin Project",
+      [
+        itemMaker("HTML"),
+        itemMaker("CSS"),
+        itemMaker("JavaScript")
+      ]
+    ),
+  ]
+
+  function getProjects() {
+    return projects
+  }
+
+  function addItem(title, description, dueDate, priority) {;
+    projects[currentProject].items.push(itemMaker(title, description, dueDate, priority))
+  }
+
+  function editItem(index, title, description, dueDate, priority) {
+    projects[currentProject].items[index] = (itemMaker(title, description, dueDate, priority))
+  }
+
+  function removeItem(index) {
+    projects[currentProject].items.splice(index, 1)
+  }
+
+  return {
+    getProjects,
+    getCurrentProject,
+    setCurrentProject,
+    addItem,
+    editItem,
+    removeItem,
+  }
 })();
+
+export default storage;
 
 domStuff.initialDom()

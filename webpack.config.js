@@ -28,7 +28,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Blackpink Todo List',
+      title: 'WhitePink Todo List',
     }),
   ],
   performance: {

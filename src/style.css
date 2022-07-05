@@ -102,7 +102,10 @@ ul {
 .content {
   background-color: var(--bg-color);
   box-shadow: inset 0 3px 4px -3px rgb(94, 93, 93);
-  padding: 30px 50px;
+  padding: 50px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .content h1 {
@@ -112,6 +115,7 @@ ul {
 }
 
 .content ul {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -119,11 +123,268 @@ ul {
 
 .content li {
   background-color: white;
-  padding: 15px 30px;
+  padding: 15px 40px 15px 30px;
   font-family: "Roboto Mono", monospace;
   font-size: 1.1rem;
   font-weight: 500;
   border-radius: 15px;
-  border-left: 20px solid var(--comp-color);
+  border-left-width: 20px;
+  border-left-style: solid;
+  display: flex;
+  justify-content: space-between;
 }
 
+.li-right,
+.li-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vague {
+  opacity: 0.7;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  place-content: center;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65rem;
+  height: 0.65rem;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--comp-color);
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.content .small-button {
+  font-family: "Roboto", sans-serif;
+  font-size: 0.85rem;
+  width: 80px;
+  height: 30px;
+}
+
+.li-right .date {
+  font-size: 0.95rem;
+  width: 60px;
+}
+
+.li-right .edit,
+.li-right .remove {
+  opacity: 0.6;
+}
+
+.li-right .edit:hover,
+.li-right .remove:hover {
+  opacity: 1;
+}
+
+.li-right .edit {
+  color: black;
+  cursor: pointer;
+}
+
+.li-right .remove {
+  color: var(--nice-red);
+  cursor: pointer;
+}
+
+.content button {
+  border-radius: 20px;
+  border: 2px solid var(--main-color);
+  background-color: white;
+  color: var(--main-color);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.content button:hover {
+  border: none;
+  background-color: var(--main-color);
+  color: white;
+}
+
+.content .big-button {
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+}
+
+.popup {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 0;
+}
+
+.popup form {
+  background-color: white;
+  box-sizing: border-box;
+  width: 400px;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+}
+
+.popup form > * {
+  margin-top: 15px;
+}
+
+.popup h1 {
+  margin-bottom: 5px;
+}
+
+.form-section {
+  background-color: var(--bg-color);
+  padding: 15px 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.form-section:hover,
+.form-section:focus {
+  box-shadow: 0 0 4px rgb(94, 93, 93);
+}
+
+.form-section input,
+.form-section textarea {
+  background-color: transparent;
+  border: none;
+  font-weight: 500;
+  width: 100%;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  outline: none;
+}
+
+.popup fieldset {
+  border: none;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  margin-top: 15px;
+}
+
+.popup legend {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.popup fieldset ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.popup fieldset label {
+  box-sizing: border-box;
+  height: 40px;
+  font-size: 1.6rem;
+  color: white;
+  opacity: 0.8;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.popup fieldset label:hover {
+  opacity: 1;
+}
+
+.popup input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+input[type="radio"]:checked + label {
+  border: 2px solid rgb(72, 69, 69);
+  opacity: 1;
+}
+
+.low {
+  background-color: rgba(104, 201, 104);
+  border-color: rgba(104, 201, 104);
+}
+
+.medium {
+  background-color: rgb(204, 212, 88);
+  border-color: rgb(204, 212, 88);
+}
+
+.high {
+  background-color: rgba(237, 94, 104);
+  border-color: rgba(237, 94, 104);
+}
+
+.popup .form-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid rgb(101, 85, 85);
+  padding-top: 15px;
+  margin: 5px 0 15px;
+}
+
+.form-buttons button {
+  height: 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  font-weight: 500;
+  color: white;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: var(--main-color);
+  opacity: 0.8;
+}
+
+.form-buttons button[type="button"] {
+  background-color: rgba(128, 128, 128);
+  opacity: 0.8;
+}
+
+.form-buttons button:hover {
+  opacity: 1;
+}
