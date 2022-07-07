@@ -1,8 +1,12 @@
 import 'normalize.css'
 import "./style.css"
+import banner from "./banner.js"
 import content from "./content.js"
+import favicon from "./img/favicon.jpg"
+import { add, differenceInCalendarDays } from 'date-fns'
 
 const domStuff = (() => {
+  const head = document.querySelector("head")
   const body = document.querySelector("body");
 
   function initialDom() {
@@ -57,67 +61,23 @@ const domStuff = (() => {
       <div class="logo">WHITEP!NK</div>
     </nav>
 
-    <div class="banner">
-      <ul class="tabs">
-        <li>
-          <div class="svg-text">
-            <svg viewBox="0 0 24 24">
-              <path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
-            </svg>
-            <h1>Home</h1>
-          </div>
-        </li>
-        <li>
-          <div class="svg-text">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M17.65 32.5q-2.05 0-3.45-1.4-1.4-1.4-1.4-3.45 0-2.05 1.4-3.45 1.4-1.4 3.45-1.4 2.05 0 3.45 1.4 1.4 1.4 1.4 3.45 0 2.05-1.4 3.45-1.4 1.4-3.45 1.4ZM9 44q-1.2 0-2.1-.9Q6 42.2 6 41V10q0-1.2.9-2.1Q7.8 7 9 7h3.25V4h3.25v3h17V4h3.25v3H39q1.2 0 2.1.9.9.9.9 2.1v31q0 1.2-.9 2.1-.9.9-2.1.9Zm0-3h30V19.5H9V41Zm0-24.5h30V10H9Zm0 0V10v6.5Z"/></svg>
-            <h1>Today</h1>
-          </div>
-        </li>
-        <li>
-          <div class="svg-text">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="48" width="48"><path d="M15.3 28.3q-.85 0-1.425-.575-.575-.575-.575-1.425 0-.85.575-1.425.575-.575 1.425-.575.85 0 1.425.575.575.575.575 1.425 0 .85-.575 1.425-.575.575-1.425.575Zm8.85 0q-.85 0-1.425-.575-.575-.575-.575-1.425 0-.85.575-1.425.575-.575 1.425-.575.85 0 1.425.575.575.575.575 1.425 0 .85-.575 1.425-.575.575-1.425.575Zm8.5 0q-.85 0-1.425-.575-.575-.575-.575-1.425 0-.85.575-1.425.575-.575 1.425-.575.85 0 1.425.575.575.575.575 1.425 0 .85-.575 1.425-.575.575-1.425.575ZM9 44q-1.2 0-2.1-.9Q6 42.2 6 41V10q0-1.2.9-2.1Q7.8 7 9 7h3.25V4h3.25v3h17V4h3.25v3H39q1.2 0 2.1.9.9.9.9 2.1v31q0 1.2-.9 2.1-.9.9-2.1.9Zm0-3h30V19.5H9V41Zm0-24.5h30V10H9Zm0 0V10v6.5Z"/></svg>
-            <h1>Week</h1>
-          </div>
-        </li>
-        <li>
-          <div class="svg-text">
-            <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M38.4 42 25.85 29.45l2.85-2.85 12.55 12.55ZM9.35 42 6.5 39.15 21 24.65l-5.35-5.35-1.15 1.15-2.2-2.2v4.25l-1.2 1.2L5 17.6l1.2-1.2h4.3L8.1 14l6.55-6.55q.85-.85 1.85-1.15 1-.3 2.2-.3 1.2 0 2.2.425 1 .425 1.85 1.275l-5.35 5.35 2.4 2.4-1.2 1.2 5.2 5.2 6.1-6.1q-.4-.65-.625-1.5-.225-.85-.225-1.8 0-2.65 1.925-4.575Q32.9 5.95 35.55 5.95q.75 0 1.275.15.525.15.875.4l-4.25 4.25 3.75 3.75 4.25-4.25q.25.4.425.975t.175 1.325q0 2.65-1.925 4.575Q38.2 19.05 35.55 19.05q-.9 0-1.55-.125t-1.2-.375Z"/></svg>
-            <h1>Projects</h1>
-          </div>
-          <ul class="small-text">
-            <li>Project 1</li>
-            <li>Project 2</li>
-            <li>Project 3</li>
-          </ul>
-        </li>
-        <li>
-          <div class="svg-text">
-            <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M24 42v-3.55l10.8-10.8 3.55 3.55L27.55 42ZM6 31.5v-3h15v3Zm34.5-2.45-3.55-3.55 1.45-1.45q.4-.4 1.05-.4t1.05.4l1.45 1.45q.4.4.4 1.05t-.4 1.05ZM6 23.25v-3h23.5v3ZM6 15v-3h23.5v3Z"/></svg>
-            <h1>Notes</h1>
-          </div>
-          <ul class="small-text">
-            <li>Note 1</li>
-            <li>Note 2</li>
-            <li>Note 3</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <div class="banner"></div>
     <div class="content"></div>
   
     `;
 
+    head.insertAdjacentHTML("beforeend", `<link rel="icon" href=${favicon}>`)
     body.innerHTML = html;
-    content.displayProject();
-    content.displayItems();
+    banner.displayBanner();
+    content.displayContent();
   }
-
+    
   return {
     initialDom,
   }
 })();
 
-const itemMaker = (title, description, dueDate, priority) => {
+const itemMaker = (title, description, date, priority, project) => {
   let checklist = false
 
   function getChecklist() {
@@ -131,8 +91,9 @@ const itemMaker = (title, description, dueDate, priority) => {
   return {
     title,
     description,
-    dueDate,
+    dueDate: new Date(date),
     priority,
+    project,
     getChecklist,
     toggleChecklist,
   }
@@ -153,7 +114,11 @@ const notes = (title, description) => {
 }
 
 const storage = (() => {
-  let currentProject = 1;
+  let currentProject = 0;
+
+  function getCurrentProjectIndex() {
+    return currentProject
+  }
 
   function getCurrentProject() {
     return projects[currentProject];
@@ -163,30 +128,39 @@ const storage = (() => {
     currentProject = newProject;
   }
 
+
   let projects = [
     projectMaker(
       "Home",
       [
-        itemMaker("Brush Teeth", "Ayaya", "4 Sept", "low"),
-        itemMaker("Make Todo List", "Ayaya", "4 Sept", "low"),
-        itemMaker("Eat Soto Noodles", "Ayaya", "4 Sept", "low"),
-        itemMaker("Listen to Vergil to get Motivation", "Ayaya", "4 Sept", "low"),
+        itemMaker("Brush Teeth", "Ayaya", "2022-07-10", "high", "Home"),
+        itemMaker("Make Todo List", "Ayaya", "2022-10-05", "low", "Home"),
+        itemMaker("Eat Soto Noodles", "Ayaya", "2022-11-06", "medium", "Home"),
+        itemMaker("Listen to Vergil to get Motivation", "Ayaya", "2022-12-07", "low", "Home"),
       ]
     ),
     projectMaker(
       "Family",
       [
-        itemMaker("Arsy", "Ayaya", "4 Sept", "low"),
-        itemMaker("Meutia", "Ayaya", "21 Nov", "medium"),
-        itemMaker("Khansa", "Ayaya", "8 Mar", "high")
+        itemMaker("Ahmad Arsy", "Ayaya", "2022-07-11", "low", "Family"),
+        itemMaker("Meutia Maharani", "Ayaya", "2004-11-21", "medium", "Family"),
+        itemMaker("Khansa Izzati", "Ayaya", "2008-03-08", "high", "Family")
       ]
     ),
     projectMaker(
       "Odin Project",
       [
-        itemMaker("HTML"),
-        itemMaker("CSS"),
-        itemMaker("JavaScript")
+        itemMaker("HTML", "The Skeleton of a Website", "2022-02-15", "low", "Odin Project"),
+        itemMaker("CSS", "The Skin of a Website", "2022-03-01", "medium", "Odin Project"),
+        itemMaker("JavaScript", "The Organs of a Website", "2022-04-22", "high", "Odin Project")
+      ]
+    ),
+    projectMaker(
+      "Physicist",
+      [
+        itemMaker("Albert Einstein", "The Father of Relativity", "1879-03-14", "high", "Physicist"),
+        itemMaker("Max Planck", "The Father of Quantum Mechanics", "1858-04-23", "medium", "Physicist"),
+        itemMaker("Isaac Newton", "The Father of Classical Mechanics and Optics", "1643-01-04", "high", "Physicist")
       ]
     ),
   ]
@@ -195,20 +169,29 @@ const storage = (() => {
     return projects
   }
 
-  function addItem(title, description, dueDate, priority) {;
-    projects[currentProject].items.push(itemMaker(title, description, dueDate, priority))
+  function addItem(title, description, dueDate, priority, project) {;
+    projects[currentProject].items.push(itemMaker(title, description, dueDate, priority, project))
   }
 
-  function editItem(index, title, description, dueDate, priority) {
-    projects[currentProject].items[index] = (itemMaker(title, description, dueDate, priority))
+  function editItem(index, title, description, dueDate, priority, itemProject) {
+    for (let i of projects) {
+      if (i.name === itemProject) {
+        i.items[index] = itemMaker(title, description, dueDate, priority, itemProject)
+      }
+    }
   }
 
-  function removeItem(index) {
-    projects[currentProject].items.splice(index, 1)
+  function removeItem(index, itemProject) {
+    for (let i of projects) {
+      if (i.name === itemProject) {
+        i.items.splice(index, 1)
+      }
+    }
   }
 
   return {
     getProjects,
+    getCurrentProjectIndex,
     getCurrentProject,
     setCurrentProject,
     addItem,
@@ -217,6 +200,65 @@ const storage = (() => {
   }
 })();
 
-export default storage;
+const processor = (() => {
+  function getToday() {
+    let todayItems = []
+  
+    for (let project of storage.getProjects()) {
+      for (let [index, item] of project.items.entries()) {
+        if (differenceInCalendarDays(new Date(), item.dueDate) === 0) {
+          todayItems.push([index, item])
+        }
+      }
+    }
+  
+    let today = projectMaker("Today", todayItems)
+    return today
+  }
+
+  function getWeek() {
+    let weekItems = []
+  
+    for (let project of storage.getProjects()) {
+      for (let [index, item] of project.items.entries()) {
+        if (differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) < 7 && differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) > 1) {
+          weekItems.push([index, item])
+        }
+      }
+    }
+  
+    let week = projectMaker("Week", weekItems)
+    return week
+  }
+
+  function getProject() {
+    let project = storage.getCurrentProject()
+
+    if (storage.getCurrentProjectIndex() === "-1") {
+      project = processor.getToday()
+    } else if (storage.getCurrentProjectIndex() === "-2") {
+      project = processor.getWeek()
+    }
+
+    return project
+  }
+
+  function getSameProject(itemProject) {
+    for (let i of storage.getProjects()) {
+      if (i.name === itemProject) {
+        return i
+      }
+    }
+  }
+
+  return {
+    getToday,
+    getWeek,
+    getProject,
+    getSameProject,
+  }
+})();
+
+export { storage, processor };
 
 domStuff.initialDom()
