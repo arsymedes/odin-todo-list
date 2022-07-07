@@ -1,4 +1,4 @@
-import {storage, processor} from "./index.js"
+import {storage} from "./index.js"
 import content from "./content.js"
 
 const banner = (() => {

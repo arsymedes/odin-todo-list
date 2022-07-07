@@ -28,9 +28,9 @@ const content = (() => {
     if (project.name === "Today" || project.name === "Week") {
       for (let [index, item] of project.items) {
         let li = /*html*/ `
-        <li class=${item.priority} data-projectname="${item.project}" data-item="${index}">
-          <div class="li-left">
-            <input type="checkbox">
+        <li class="${item.priority} ${item.getChecklist() ? 'vague' : ''}" data-projectname="${item.project}" data-item="${index}">
+          <div class="li-left ${item.getChecklist() ? 'strikethrough' : ''}">
+            <input type="checkbox" ${item.getChecklist() ? "checked" : ""}>
             <div class="title">${item.title}</div>
           </div>
           <div class="li-right">
@@ -67,6 +67,9 @@ const content = (() => {
   
       document.querySelectorAll('input[type="checkbox"]').forEach(element => {
         element.addEventListener("click", () => {
+          let index = element.parentElement.parentElement.dataset.item
+          let projectName = element.parentElement.parentElement.dataset.projectname
+          processor.getSameProject(projectName).items[index].toggleChecklist()
           element.parentElement.parentElement.classList.toggle("vague");
           element.parentElement.classList.toggle("strikethrough")
         })
@@ -76,13 +79,14 @@ const content = (() => {
         element.addEventListener("click", () => {
           editForm(element)
         })
-      })  
+      }) 
+     
     } else {
       for (let [index,item] of project.items.entries()) {
         let li = /*html*/ `
-        <li class=${item.priority} data-projectname="${item.project}" data-item="${index}">
-          <div class="li-left">
-            <input type="checkbox">
+        <li class="${item.priority} ${item.getChecklist() ? 'vague' : ''}" data-projectname="${item.project}" data-item="${index}">
+          <div class="li-left ${item.getChecklist() ? 'strikethrough' : ''}">
+            <input type="checkbox" ${item.getChecklist() ? "checked" : ""}>
             <div class="title">${item.title}</div>
           </div>
           <div class="li-right">
@@ -119,6 +123,9 @@ const content = (() => {
   
       document.querySelectorAll('input[type="checkbox"]').forEach(element => {
         element.addEventListener("click", () => {
+          let index = element.parentElement.parentElement.dataset.item
+          let projectName = element.parentElement.parentElement.dataset.projectname
+          processor.getSameProject(projectName).items[index].toggleChecklist()
           element.parentElement.parentElement.classList.toggle("vague");
           element.parentElement.classList.toggle("strikethrough")
         })

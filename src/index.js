@@ -13,6 +13,8 @@ const domStuff = (() => {
   const body = document.querySelector("body");
 
   function initialDom() {
+    storage.fetchProjects()
+
     let html = /*html*/ `
     <nav>
       <svg fill="currentColor" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">
@@ -80,8 +82,13 @@ const domStuff = (() => {
   }
 })();
 
-const itemMaker = (title, description, date, priority, project) => {
-  let checklist = false
+const itemMaker = (title, description=null, date=null, priority=null, project=null, check) => {
+  let checklist = null
+  if (check === undefined) {
+    checklist = false
+  } else {
+    checklist = check
+  }
 
   function getChecklist() {
     return checklist
@@ -89,6 +96,8 @@ const itemMaker = (title, description, date, priority, project) => {
 
   function toggleChecklist() {
     checklist = !checklist
+    console.log(checklist)
+    storage.saveProjects()
   }
 
   return {
@@ -173,10 +182,12 @@ const storage = (() => {
 
   function addProject(projectName) {
     projects.push(projectMaker(projectName))
+    saveProjects()
   }
 
   function addItem(title, description, dueDate, priority, project) {;
     projects[currentProject].items.push(itemMaker(title, description, dueDate, priority, project))
+    saveProjects()
   }
 
   function editItem(index, title, description, dueDate, priority, itemProject) {
@@ -185,6 +196,7 @@ const storage = (() => {
         i.items[index] = itemMaker(title, description, dueDate, priority, itemProject)
       }
     }
+    saveProjects()
   }
 
   function removeItem(index, itemProject) {
@@ -192,6 +204,19 @@ const storage = (() => {
       if (i.name === itemProject) {
         i.items.splice(index, 1)
       }
+    }
+    saveProjects()
+  }
+
+  function saveProjects() {
+    localStorage.setItem('projects', processor.objectToList())
+  }
+
+  function fetchProjects() {
+    if (localStorage.getItem('projects') === null) {
+      saveProjects()
+    } else {
+      projects = processor.listToObject()
     }
   }
 
@@ -204,6 +229,8 @@ const storage = (() => {
     addItem,
     editItem,
     removeItem,
+    saveProjects,
+    fetchProjects,
   }
 })();
 
@@ -258,14 +285,46 @@ const processor = (() => {
     }
   }
 
+  function objectToList() {
+    let list = []
+
+    for (let project of storage.getProjects()) {
+      let childList = [project.name]
+      let siblingList = []
+      for (let item of project.items) {
+        let grandChildList = []
+        grandChildList.push(item.title, item.description, item.dueDate.getTime(), item.priority, item.project, item.getChecklist())
+        siblingList.push(grandChildList)
+      }
+      childList.push(siblingList)
+      list.push(childList)
+    }
+    return JSON.stringify(list)
+  }
+
+  function listToObject() {
+    let list = []
+    for (let project of JSON.parse(localStorage.getItem("projects"))) {
+      let childList = []
+      for (let item of project[1]) {
+        childList.push(itemMaker(item[0], item[1], item[2], item[3], item[4], item[5]))
+      }
+      list.push(projectMaker(project[0], childList))
+    }
+    return list
+  }
+
   return {
     getToday,
     getWeek,
     getProject,
     getSameProject,
+    objectToList,
+    listToObject,
   }
 })();
 
 export { storage, processor };
 
 domStuff.initialDom()
+console.log(processor.objectToList())
