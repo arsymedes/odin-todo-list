@@ -1,0 +1,134 @@
+.content {
+    background-color: var(--bg-color);
+    box-shadow: inset 0 3px 4px -3px rgb(94, 93, 93);
+    padding: 50px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .content h1 {
+    margin: 0;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  
+  .content ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .content li {
+    background-color: white;
+    padding: 15px 40px 15px 30px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 15px;
+    border-left-width: 20px;
+    border-left-style: solid;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .li-right,
+  .li-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .vague {
+    opacity: 0.7;
+  }
+  
+  .strikethrough {
+    text-decoration: line-through;
+  }
+  
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: grid;
+    place-content: center;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+  }
+  
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.65rem;
+    height: 0.65rem;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--comp-color);
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+  
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
+  
+  .small-button {
+    font-family: "Roboto", sans-serif;
+    font-size: 0.85rem;
+    width: 80px;
+    height: 30px;
+  }
+  
+  .li-right .date {
+    font-size: 0.95rem;
+    width: 60px;
+  }
+  
+  .li-right .edit,
+  .li-right .remove {
+    opacity: 0.6;
+  }
+  
+  .li-right .edit:hover,
+  .li-right .remove:hover {
+    opacity: 1;
+  }
+  
+  .li-right .edit {
+    color: black;
+    cursor: pointer;
+  }
+  
+  .li-right .remove {
+    color: var(--nice-red);
+    cursor: pointer;
+  }
+  
+  .content button,
+  .pink-button {
+    border-radius: 20px;
+    border: 2px solid var(--main-color);
+    background-color: white;
+    color: var(--main-color);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .content button:hover,
+  .pink-button:hover {
+    border: none;
+    background-color: var(--main-color);
+    color: white;
+  }
+  
+  .content .big-button {
+    width: 200px;
+    height: 40px;
+    margin-top: 20px;
+  }
+  

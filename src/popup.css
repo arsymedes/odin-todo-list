@@ -1,0 +1,158 @@
+.popup {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 0;
+}
+
+.popup form {
+  background-color: white;
+  box-sizing: border-box;
+  width: 400px;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+}
+
+.popup form > * {
+  margin-top: 15px;
+}
+
+.popup h1 {
+  margin-bottom: 5px;
+}
+
+.form-section {
+  background-color: var(--bg-color);
+  font-weight: 500;
+  padding: 15px 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.form-section:hover,
+.form-section:focus {
+  box-shadow: 0 0 4px rgb(94, 93, 93);
+}
+
+.form-section input,
+.form-section textarea {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  font-weight: 500;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  outline: none;
+}
+
+.popup fieldset {
+  border: none;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  margin-top: 15px;
+}
+
+.popup legend {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.popup fieldset ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.popup fieldset label {
+  box-sizing: border-box;
+  height: 40px;
+  font-size: 1.6rem;
+  color: white;
+  opacity: 0.8;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.popup fieldset label:hover {
+  opacity: 1;
+}
+
+.popup input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+input[type="radio"]:checked + label {
+  border: 2px solid rgb(72, 69, 69);
+  opacity: 1;
+}
+
+.low {
+  background-color: rgba(104, 201, 104);
+  border-color: rgba(104, 201, 104);
+}
+
+.medium {
+  background-color: rgb(204, 212, 88);
+  border-color: rgb(204, 212, 88);
+}
+
+.high {
+  background-color: rgba(237, 94, 104);
+  border-color: rgba(237, 94, 104);
+}
+
+.popup .form-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid rgb(101, 85, 85);
+  padding-top: 15px;
+  margin: 5px 0 15px;
+}
+
+.form-buttons button {
+  height: 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  font-weight: 500;
+  color: white;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: var(--main-color);
+  opacity: 0.8;
+}
+
+.form-buttons button[type="button"] {
+  background-color: rgba(128, 128, 128);
+  opacity: 0.8;
+}
+
+.form-buttons button:hover {
+  opacity: 1;
+}

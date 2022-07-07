@@ -54,15 +54,18 @@ const banner = (() => {
       })
     })
 
-    document.querySelector("#today").addEventListener("click", () => {
-
-    })
-
     document.querySelectorAll(".activate").forEach(element => {
       element.addEventListener("click", () => {
         document.querySelectorAll(".activate").forEach(el => el.classList.remove("active"))
         element.classList.add("active")
       })
+    })
+
+    document.querySelector(".add-project").addEventListener("click", event => {
+      event.stopPropagation()
+      projectList.addForm()
+      document.querySelector(".add-project").remove()
+      document.querySelector("#new-project").focus()
     })
   }
 
@@ -82,6 +85,7 @@ const projectList = (() => {
         <h1>Projects</h1>
       </button>
       ${addProjectList()}
+      <button class="add-project">+ Add Project</button>
     </li>
     `
     tabs.insertAdjacentHTML("beforeend", html)
@@ -99,9 +103,33 @@ const projectList = (() => {
 
     return ul
   }
+
+  function addForm() {
+    const projects = document.querySelector("#projects")
+
+    let html = /*html*/ `
+    <form action="" method="get" id="add-project-form">
+      <div class="popup-form">
+        <input type="text" id="new-project" name="newProject">
+      </div>
+    </form>
+    `
+    projects.insertAdjacentHTML("beforeend", html)
+
+    document.addEventListener("click", () => {
+      banner.displayBanner()
+    }, { once: true})
+
+    document.querySelector("#add-project-form").addEventListener("submit", event => {
+      event.preventDefault();
+      storage.addProject(document.querySelector("#new-project").value)
+      banner.displayBanner()
+    })
+  }
   
   return {
     addProjects,
+    addForm,
   }
 })();
 

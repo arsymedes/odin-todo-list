@@ -1,5 +1,8 @@
 import 'normalize.css'
 import "./style.css"
+import "./banner.css"
+import "./content.css"
+import "./popup.css"
 import banner from "./banner.js"
 import content from "./content.js"
 import favicon from "./img/favicon.jpg"
@@ -99,7 +102,7 @@ const itemMaker = (title, description, date, priority, project) => {
   }
 }
 
-const projectMaker = (name, items) => {
+const projectMaker = (name, items = []) => {
   return {
     name,
     items,
@@ -127,7 +130,6 @@ const storage = (() => {
   function setCurrentProject(newProject) {
     currentProject = newProject;
   }
-
 
   let projects = [
     projectMaker(
@@ -169,6 +171,10 @@ const storage = (() => {
     return projects
   }
 
+  function addProject(projectName) {
+    projects.push(projectMaker(projectName))
+  }
+
   function addItem(title, description, dueDate, priority, project) {;
     projects[currentProject].items.push(itemMaker(title, description, dueDate, priority, project))
   }
@@ -191,6 +197,7 @@ const storage = (() => {
 
   return {
     getProjects,
+    addProject,
     getCurrentProjectIndex,
     getCurrentProject,
     setCurrentProject,
