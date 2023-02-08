@@ -1,11 +1,13 @@
-import {storage} from "./index.js"
-import content from "./content.js"
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-use-before-define */
+import { storage } from "./index";
+import content from "./content";
 
 const banner = (() => {
   function displayBanner() {
-    const bannerClass = document.querySelector(".banner")
+    const bannerClass = document.querySelector(".banner");
 
-    let html = /*html*/ `
+    const html = /* html */ `
     <ul class="tabs">
       <li>
         <a href="javascript:void(0)" class="svg-text activate" data-project=0>
@@ -39,46 +41,50 @@ const banner = (() => {
         </ul>
       </li> -->
     </ul>
-    `
+    `;
 
     bannerClass.innerHTML = html;
-    projectList.addProjects()
+    projectList.addProjects();
 
-    document.querySelectorAll("[data-project]").forEach(element => {
+    document.querySelectorAll("[data-project]").forEach((element) => {
       element.addEventListener("click", () => {
-        storage.setCurrentProject(element.dataset.project)
-        content.displayContent()
+        storage.setCurrentProject(element.dataset.project);
+        content.displayContent();
         if (+element.dataset.project < 0) {
-          document.querySelector(".add-button").remove()
+          document.querySelector(".add-button").remove();
         }
-      })
-    })
+      });
+    });
 
-    document.querySelectorAll(".activate").forEach(element => {
+    document.querySelectorAll(".activate").forEach((element) => {
       element.addEventListener("click", () => {
-        document.querySelectorAll(".activate").forEach(el => el.classList.remove("active"))
-        element.classList.add("active")
-      })
-    })
+        document
+          .querySelectorAll(".activate")
+          .forEach((el) => el.classList.remove("active"));
+        element.classList.add("active");
+      });
+    });
 
-    document.querySelector(".add-project").addEventListener("click", event => {
-      event.stopPropagation()
-      projectList.addForm()
-      document.querySelector(".add-project").remove()
-      document.querySelector("#new-project").focus()
-    })
+    document
+      .querySelector(".add-project")
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        projectList.addForm();
+        document.querySelector(".add-project").remove();
+        document.querySelector("#new-project").focus();
+      });
   }
 
   return {
     displayBanner,
-  }
+  };
 })();
 
 const projectList = (() => {
   function addProjects() {
-    const tabs = document.querySelector(".tabs")
+    const tabs = document.querySelector(".tabs");
 
-    let html = /*html*/ `
+    const html = /* html */ `
     <li id="projects">
       <button class="svg-text activate">
         <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M38.4 42 25.85 29.45l2.85-2.85 12.55 12.55ZM9.35 42 6.5 39.15 21 24.65l-5.35-5.35-1.15 1.15-2.2-2.2v4.25l-1.2 1.2L5 17.6l1.2-1.2h4.3L8.1 14l6.55-6.55q.85-.85 1.85-1.15 1-.3 2.2-.3 1.2 0 2.2.425 1 .425 1.85 1.275l-5.35 5.35 2.4 2.4-1.2 1.2 5.2 5.2 6.1-6.1q-.4-.65-.625-1.5-.225-.85-.225-1.8 0-2.65 1.925-4.575Q32.9 5.95 35.55 5.95q.75 0 1.275.15.525.15.875.4l-4.25 4.25 3.75 3.75 4.25-4.25q.25.4.425.975t.175 1.325q0 2.65-1.925 4.575Q38.2 19.05 35.55 19.05q-.9 0-1.55-.125t-1.2-.375Z"/></svg>
@@ -87,50 +93,54 @@ const projectList = (() => {
       ${addProjectList()}
       <button class="add-project">+ Add Project</button>
     </li>
-    `
-    tabs.insertAdjacentHTML("beforeend", html)
+    `;
+    tabs.insertAdjacentHTML("beforeend", html);
   }
 
   function addProjectList() {
-    let ul = /*html*/ `<ul class="sub-project">`
+    let ul = /* html */ '<ul class="sub-project">';
+    [...storage.getProjects().entries()].forEach(([index, project]) => {
+      if (index === 0) return;
+      ul += /* html */ `<li class="activate" data-project=${index}>${project.name}</li>`;
+    });
+    ul += "</ul>";
 
-    for (let [index, project] of storage.getProjects().entries()) {
-      if (index === 0) continue;
-      ul += /*html*/ `<li class="activate" data-project=${index}>${project.name}</li>`
-    }
-
-    ul += `</ul>`
-
-    return ul
+    return ul;
   }
 
   function addForm() {
-    const projects = document.querySelector("#projects")
+    const projects = document.querySelector("#projects");
 
-    let html = /*html*/ `
+    const html = /* html */ `
     <form action="" method="get" id="add-project-form">
       <div class="popup-form">
         <input type="text" id="new-project" name="newProject">
       </div>
     </form>
-    `
-    projects.insertAdjacentHTML("beforeend", html)
+    `;
+    projects.insertAdjacentHTML("beforeend", html);
 
-    document.addEventListener("click", () => {
-      banner.displayBanner()
-    }, { once: true})
+    document.addEventListener(
+      "click",
+      () => {
+        banner.displayBanner();
+      },
+      { once: true }
+    );
 
-    document.querySelector("#add-project-form").addEventListener("submit", event => {
-      event.preventDefault();
-      storage.addProject(document.querySelector("#new-project").value)
-      banner.displayBanner()
-    })
+    document
+      .querySelector("#add-project-form")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        storage.addProject(document.querySelector("#new-project").value);
+        banner.displayBanner();
+      });
   }
-  
+
   return {
     addProjects,
     addForm,
-  }
+  };
 })();
 
 export default banner;

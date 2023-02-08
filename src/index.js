@@ -1,21 +1,22 @@
-import 'normalize.css'
-import "./style.css"
-import "./banner.css"
-import "./content.css"
-import "./popup.css"
-import banner from "./banner.js"
-import content from "./content.js"
-import favicon from "./img/favicon.jpg"
-import { add, differenceInCalendarDays } from 'date-fns'
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-use-before-define */
+import "normalize.css";
+import "./style.css";
+import "./banner.css";
+import "./content.css";
+import "./popup.css";
+import { add, differenceInCalendarDays } from "date-fns";
+
+import banner from "./banner";
+import content from "./content";
+import favicon from "./img/favicon.jpg";
 
 const domStuff = (() => {
-  const head = document.querySelector("head")
+  const head = document.querySelector("head");
   const body = document.querySelector("body");
 
   function initialDom() {
-    storage.fetchProjects()
-
-    let html = /*html*/ `
+    const html = /* html */ `
     <nav>
       <svg fill="currentColor" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">
         <g>
@@ -71,65 +72,133 @@ const domStuff = (() => {
   
     `;
 
-    head.insertAdjacentHTML("beforeend", `<link rel="icon" href=${favicon}>`)
+    head.insertAdjacentHTML("beforeend", `<link rel="icon" href=${favicon}>`);
     body.innerHTML = html;
     banner.displayBanner();
     content.displayContent();
   }
-    
+
   return {
     initialDom,
-  }
+  };
 })();
 
-const itemMaker = (title, description=null, date=null, priority=null, project=null, check) => {
-  let checklist = null
-  if (check === undefined) {
-    checklist = false
+const itemMaker = (
+  title,
+  description = null,
+  date = null,
+  priority = null,
+  project = null,
+  check = null
+) => {
+  let checklist = null;
+
+  if (check === null) {
+    checklist = false;
   } else {
-    checklist = check
+    checklist = check;
   }
 
   function getChecklist() {
-    return checklist
+    return checklist;
   }
 
   function toggleChecklist() {
-    checklist = !checklist
-    console.log(checklist)
-    storage.saveProjects()
+    checklist = !checklist;
+    storage.saveProjects();
   }
 
   return {
     title,
     description,
-    dueDate: new Date(date),
     priority,
     project,
+    dueDate: new Date(date),
     getChecklist,
     toggleChecklist,
-  }
-}
+  };
+};
 
-const projectMaker = (name, items = []) => {
-  return {
-    name,
-    items,
-  }
-}
+const projectMaker = (name, items = []) => ({
+  name,
+  items,
+});
 
-const notes = (title, description) => {
-  return {
-    title,
-    description,
-  }
-}
+// const notes = (title, description) => ({
+//   title,
+//   description,
+// });
 
 const storage = (() => {
   let currentProject = 0;
+  let projects = [
+    projectMaker("Home", [
+      itemMaker("Brush Teeth", "Ayaya", "2022-07-10", "high", "Home"),
+      itemMaker("Make Todo List", "Ayaya", "2022-10-05", "low", "Home"),
+      itemMaker("Eat Soto Noodles", "Ayaya", "2022-11-06", "medium", "Home"),
+      itemMaker(
+        "Listen to Vergil to get Motivation",
+        "Ayaya",
+        "2022-12-07",
+        "low",
+        "Home"
+      ),
+    ]),
+    projectMaker("Family", [
+      itemMaker("Ahmad Arsy", "Ayaya", "2022-07-11", "low", "Family"),
+      itemMaker("Meutia Maharani", "Ayaya", "2004-11-21", "medium", "Family"),
+      itemMaker("Khansa Izzati", "Ayaya", "2008-03-08", "high", "Family"),
+    ]),
+    projectMaker("Odin Project", [
+      itemMaker(
+        "HTML",
+        "The Skeleton of a Website",
+        "2022-02-15",
+        "low",
+        "Odin Project"
+      ),
+      itemMaker(
+        "CSS",
+        "The Skin of a Website",
+        "2022-03-01",
+        "medium",
+        "Odin Project"
+      ),
+      itemMaker(
+        "JavaScript",
+        "The Organs of a Website",
+        "2022-04-22",
+        "high",
+        "Odin Project"
+      ),
+    ]),
+    projectMaker("Physicist", [
+      itemMaker(
+        "Albert Einstein",
+        "The Father of Relativity",
+        "1879-03-14",
+        "high",
+        "Physicist"
+      ),
+      itemMaker(
+        "Max Planck",
+        "The Father of Quantum Mechanics",
+        "1858-04-23",
+        "medium",
+        "Physicist"
+      ),
+      itemMaker(
+        "Isaac Newton",
+        "The Father of Classical Mechanics and Optics",
+        "1643-01-04",
+        "high",
+        "Physicist"
+      ),
+    ]),
+  ];
 
   function getCurrentProjectIndex() {
-    return currentProject
+    return currentProject;
   }
 
   function getCurrentProject() {
@@ -140,84 +209,56 @@ const storage = (() => {
     currentProject = newProject;
   }
 
-  let projects = [
-    projectMaker(
-      "Home",
-      [
-        itemMaker("Brush Teeth", "Ayaya", "2022-07-10", "high", "Home"),
-        itemMaker("Make Todo List", "Ayaya", "2022-10-05", "low", "Home"),
-        itemMaker("Eat Soto Noodles", "Ayaya", "2022-11-06", "medium", "Home"),
-        itemMaker("Listen to Vergil to get Motivation", "Ayaya", "2022-12-07", "low", "Home"),
-      ]
-    ),
-    projectMaker(
-      "Family",
-      [
-        itemMaker("Ahmad Arsy", "Ayaya", "2022-07-11", "low", "Family"),
-        itemMaker("Meutia Maharani", "Ayaya", "2004-11-21", "medium", "Family"),
-        itemMaker("Khansa Izzati", "Ayaya", "2008-03-08", "high", "Family")
-      ]
-    ),
-    projectMaker(
-      "Odin Project",
-      [
-        itemMaker("HTML", "The Skeleton of a Website", "2022-02-15", "low", "Odin Project"),
-        itemMaker("CSS", "The Skin of a Website", "2022-03-01", "medium", "Odin Project"),
-        itemMaker("JavaScript", "The Organs of a Website", "2022-04-22", "high", "Odin Project")
-      ]
-    ),
-    projectMaker(
-      "Physicist",
-      [
-        itemMaker("Albert Einstein", "The Father of Relativity", "1879-03-14", "high", "Physicist"),
-        itemMaker("Max Planck", "The Father of Quantum Mechanics", "1858-04-23", "medium", "Physicist"),
-        itemMaker("Isaac Newton", "The Father of Classical Mechanics and Optics", "1643-01-04", "high", "Physicist")
-      ]
-    ),
-  ]
-
   function getProjects() {
-    return projects
-  }
-
-  function addProject(projectName) {
-    projects.push(projectMaker(projectName))
-    saveProjects()
-  }
-
-  function addItem(title, description, dueDate, priority, project) {;
-    projects[currentProject].items.push(itemMaker(title, description, dueDate, priority, project))
-    saveProjects()
-  }
-
-  function editItem(index, title, description, dueDate, priority, itemProject) {
-    for (let i of projects) {
-      if (i.name === itemProject) {
-        i.items[index] = itemMaker(title, description, dueDate, priority, itemProject)
-      }
-    }
-    saveProjects()
-  }
-
-  function removeItem(index, itemProject) {
-    for (let i of projects) {
-      if (i.name === itemProject) {
-        i.items.splice(index, 1)
-      }
-    }
-    saveProjects()
+    return projects;
   }
 
   function saveProjects() {
-    localStorage.setItem('projects', processor.objectToList())
+    localStorage.setItem("projects", processor.objectToList());
   }
 
   function fetchProjects() {
-    if (localStorage.getItem('projects') === null) {
-      saveProjects()
+    if (localStorage.getItem("projects") === null) {
+      saveProjects();
     } else {
-      projects = processor.listToObject()
+      projects = processor.listToObject();
     }
+  }
+
+  function addProject(projectName) {
+    projects.push(projectMaker(projectName));
+    saveProjects();
+  }
+
+  function addItem(title, description, dueDate, priority, project) {
+    projects[currentProject].items.push(
+      itemMaker(title, description, dueDate, priority, project)
+    );
+    saveProjects();
+  }
+
+  function editItem(index, title, description, dueDate, priority, itemProject) {
+    [...projects.entries()].forEach(([i, j]) => {
+      if (j.name === itemProject) {
+        projects[i].items[index] = itemMaker(
+          title,
+          description,
+          dueDate,
+          priority,
+          itemProject
+        );
+      }
+    });
+    saveProjects();
+  }
+
+  function removeItem(index, itemProject) {
+    projects.forEach((i) => {
+      if (i.name === itemProject) {
+        i.items.splice(index, 1);
+      }
+    });
+    saveProjects();
   }
 
   return {
@@ -231,87 +272,102 @@ const storage = (() => {
     removeItem,
     saveProjects,
     fetchProjects,
-  }
+  };
 })();
 
 const processor = (() => {
   function getToday() {
-    let todayItems = []
-  
-    for (let project of storage.getProjects()) {
-      for (let [index, item] of project.items.entries()) {
+    const todayItems = [];
+
+    storage.getProjects().forEach((project) => {
+      [project.items.entries()].forEach(([index, item]) => {
         if (differenceInCalendarDays(new Date(), item.dueDate) === 0) {
-          todayItems.push([index, item])
+          todayItems.push([index, item]);
         }
-      }
-    }
-  
-    let today = projectMaker("Today", todayItems)
-    return today
+      });
+    });
+
+    const today = projectMaker("Today", todayItems);
+    return today;
   }
 
   function getWeek() {
-    let weekItems = []
-  
-    for (let project of storage.getProjects()) {
-      for (let [index, item] of project.items.entries()) {
-        if (differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) < 7 && differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) > 1) {
-          weekItems.push([index, item])
+    const weekItems = [];
+
+    storage.getProjects().forEach((project) => {
+      [...project.items.entries()].forEach(([index, item]) => {
+        if (
+          differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) <
+            7 &&
+          differenceInCalendarDays(add(new Date(), { days: 7 }), item.dueDate) >
+            1
+        ) {
+          weekItems.push([index, item]);
         }
-      }
-    }
-  
-    let week = projectMaker("Week", weekItems)
-    return week
+      });
+    });
+
+    const week = projectMaker("Week", weekItems);
+    return week;
   }
 
   function getProject() {
-    let project = storage.getCurrentProject()
+    let project = storage.getCurrentProject();
 
     if (storage.getCurrentProjectIndex() === "-1") {
-      project = processor.getToday()
+      project = processor.getToday();
     } else if (storage.getCurrentProjectIndex() === "-2") {
-      project = processor.getWeek()
+      project = processor.getWeek();
     }
 
-    return project
+    return project;
   }
 
   function getSameProject(itemProject) {
-    for (let i of storage.getProjects()) {
-      if (i.name === itemProject) {
-        return i
-      }
-    }
+    let temp = null;
+    storage.getProjects().forEach((i) => {
+      if (i.name === itemProject) temp = i;
+    });
+    return temp;
   }
 
   function objectToList() {
-    let list = []
+    const list = [];
 
-    for (let project of storage.getProjects()) {
-      let childList = [project.name]
-      let siblingList = []
-      for (let item of project.items) {
-        let grandChildList = []
-        grandChildList.push(item.title, item.description, item.dueDate.getTime(), item.priority, item.project, item.getChecklist())
-        siblingList.push(grandChildList)
-      }
-      childList.push(siblingList)
-      list.push(childList)
-    }
-    return JSON.stringify(list)
+    storage.getProjects().forEach((project) => {
+      const childList = [project.name];
+      const siblingList = [];
+
+      project.items.forEach((item) => {
+        const grandChildList = [];
+        grandChildList.push(
+          item.title,
+          item.description,
+          item.dueDate.getTime(),
+          item.priority,
+          item.project,
+          item.getChecklist()
+        );
+        siblingList.push(grandChildList);
+      });
+      childList.push(siblingList);
+      list.push(childList);
+    });
+    return JSON.stringify(list);
   }
 
   function listToObject() {
-    let list = []
-    for (let project of JSON.parse(localStorage.getItem("projects"))) {
-      let childList = []
-      for (let item of project[1]) {
-        childList.push(itemMaker(item[0], item[1], item[2], item[3], item[4], item[5]))
-      }
-      list.push(projectMaker(project[0], childList))
-    }
-    return list
+    const list = [];
+    JSON.parse(localStorage.getItem("projects")).forEach((project) => {
+      const childList = [];
+      project[1].forEach((item) => {
+        childList.push(
+          itemMaker(item[0], item[1], item[2], item[3], item[4], item[5])
+        );
+      });
+      list.push(projectMaker(project[0], childList));
+    });
+    return list;
   }
 
   return {
@@ -321,10 +377,10 @@ const processor = (() => {
     getSameProject,
     objectToList,
     listToObject,
-  }
+  };
 })();
 
 export { storage, processor };
 
-domStuff.initialDom()
-console.log(processor.objectToList())
+storage.fetchProjects();
+domStuff.initialDom();
